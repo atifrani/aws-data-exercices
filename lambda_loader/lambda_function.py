@@ -17,6 +17,7 @@ def lambda_handler(event, context):
     region = vent["Records"][0]["awsRegion"]
 
     db_name = db_config.db_name
+    db_schema = db_config.db_schema
     db_user = db_config.db_user
     db_host = db_config.db_host
     db_password = db_config.db_password
@@ -28,7 +29,19 @@ def lambda_handler(event, context):
     print(f"db_password :  {db_pass}")
     print(f"db_port :  {db_port}")
 
+    # retrieve rds table name from file name
+    target_table = map_name_table(filename)  
+    print (f"la table rds: {target_table}")
+
+    # Get connction
+    conn = make_conn(db_name, db_user, db_host, db_pass, db_port)
     
+    # Create aws_s3 extension for RDS postgresql if not exist
+    execute_query(conn, "CREATE EXTENSON IF NOT EXISTS aws_s3 CASCADE;")
+
+    # import csv file from s3 to rds
+    options = f"(format csv, delimiter '','', HEADER true, ENCODING ''utf-8'')"
+    import_csv_from_s3(conn, target_table, db_schema, bucketname, filename, region, options)
 
     return {
         'statusCode': 200,

@@ -3,7 +3,7 @@ import json
 import operator
 
 # Create RDS connection
-def make_conn(db_name, db_user, db_host, db_pass, db_port):
+def make_conn(db_name: str, db_user: str, db_host: str, db_pass: str, db_port):
     conn = None
     conn_string = "dbname='%s' user='%s' host='%s' password='%s' port=%s" % (
     db_name, db_user, db_host, db_pass, db_port)
@@ -33,7 +33,7 @@ def import_csv_from_s3(conn, table_name: str, table_schema: str, s3_bucket: str,
     
     # truncate table before load
     execute_query(conn, f"trunctate table {table_schema}.{table_name};")
-    
+
     # Import csv file into rds table
     query = f"SELECT aws_s3.table_import_from_s3('{table_schema}.{table_name}', '', '{options}', '{s3_bucket}', '{filepath}', '{region_name}');"
 
