@@ -1,5 +1,6 @@
-import db_config
-
+import psycopg2
+import json
+import operator
 
 # Create RDS connection
 def make_conn(db_name, db_user, db_host, db_pass, db_port):
@@ -37,8 +38,18 @@ def import_csv_from_s3(conn, table_name: str, table_schema: str, s3_bucket: str,
     query = f"SELECT aws_s3.table_import_from_s3('{table_schema}.{table_name}', '', '{options}', '{s3_bucket}', '{filepath}', '{region_name}');"
 
     conn.commit()
-
     print("SUCCESS")
 
- 
+def map_name_table(file_name: str):
+
+    table_name = "no_table"
+    
+    if file_name == "":
+        table_name = ""
+
+    
+    if table_name == "no_table":
+        raise Exception(f"no table match with filename, please implement the mapping")
+
+    return table_name
  

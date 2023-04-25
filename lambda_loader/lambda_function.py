@@ -28,6 +28,8 @@ def lambda_handler(event, context):
     print(f"db_password :  {db_pass}")
     print(f"db_port :  {db_port}")
 
+    
+
     return {
         'statusCode': 200,
         body: json.dumps('Lambda is success')
