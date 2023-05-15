@@ -26,7 +26,7 @@ def lambda_handler(event, context):
     print(f"db_name :  {db_name}")
     print(f"db_user :  {db_user}")
     print(f"db_host :  {db_host}")
-    print(f"db_password :  {db_pass}")
+    print(f"db_password :  {db_password}")
     print(f"db_port :  {db_port}")
 
     # retrieve rds table name from file name
