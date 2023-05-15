@@ -1,6 +1,6 @@
 import json
 import db_config
-import utils
+from utils import map_name_table, make_conn, execute_query, import_csv_from_s3
 
 
 def lambda_handler(event, context):
@@ -34,10 +34,10 @@ def lambda_handler(event, context):
     print (f"la table rds: {target_table}")
 
     # Get connction
-    conn = make_conn(db_name, db_user, db_host, db_pass, db_port)
+    conn = make_conn(db_name, db_user, db_host, db_password, db_port)
     
     # Create aws_s3 extension for RDS postgresql if not exist
-    execute_query(conn, "CREATE EXTENSON IF NOT EXISTS aws_s3 CASCADE;")
+    execute_query(conn, "CREATE EXTENSION IF NOT EXISTS aws_s3 CASCADE;")
 
     # import csv file from s3 to rds
     options = f"(format csv, delimiter '','', HEADER true, ENCODING ''utf-8'')"
@@ -45,5 +45,5 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        body: json.dumps('Lambda is success')
+        'body': json.dumps('Lambda is success')
     }
