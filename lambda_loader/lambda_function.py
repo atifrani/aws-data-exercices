@@ -14,7 +14,7 @@ def lambda_handler(event, context):
     filename = filepath.split('/')[-1]
     print(f"file name :  {filename}")
 
-    region = vent["Records"][0]["awsRegion"]
+    region = event["Records"][0]["awsRegion"]
 
     db_name = db_config.db_name
     db_schema = db_config.db_schema
