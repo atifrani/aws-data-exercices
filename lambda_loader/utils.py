@@ -32,10 +32,11 @@ def import_csv_from_s3(conn, table_name: str, table_schema: str, s3_bucket: str,
     execute_query(conn, "set datestyle TO ISO,DMY;")
     
     # truncate table before load
-    execute_query(conn, f"trunctate table {table_schema}.{table_name};")
+    execute_query(conn, f"truncate table {table_schema}.{table_name};")
 
     # Import csv file into rds table
     query = f"SELECT aws_s3.table_import_from_s3('{table_schema}.{table_name}', '', '{options}', '{s3_bucket}', '{filepath}', '{region_name}');"
+    execute_query(conn,query)
 
     conn.commit()
     print("SUCCESS")
@@ -44,8 +45,8 @@ def map_name_table(file_name: str):
 
     table_name = "no_table"
     
-    if file_name == "":
-        table_name = ""
+    if file_name == "customers.csv":
+        table_name = "customers"
 
     
     if table_name == "no_table":
