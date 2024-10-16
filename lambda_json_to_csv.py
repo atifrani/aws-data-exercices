@@ -5,8 +5,8 @@ import boto3
 def lambda_handler(event, context):
     
     targetbucket = 'BUCKET NAME'
-    csvkey = 'FILENAME.csv'
-    jsonkey = 'FILENAME.json'
+    csvkey = 'departement.csv'
+    jsonkey = 'departement.json'
     
     s3 = boto3.resource('s3')
     csv_object = s3.Object(targetbucket, csvkey)
@@ -16,12 +16,11 @@ def lambda_handler(event, context):
     
     for line in csv_content:
         x = json.dumps(line.decode('utf-8')).split(',')
-        Username = str(x[0])
-        Company = str(x[1])
-        Title = str(x[2])
-        y = '{ "Username": ' + Username + '"' + ','  \
-            + ' "Company": ' + '"' + Company + '"' + ',' \
-            + ' "Title": ' + '"' +  Title + '"' + '}'
+        dept_id = str(x[0])
+        dept_name = str(x[1])
+        
+        y = '{ "departement_id": ' + dept_id + '"' + ','  \
+            + ' "departement_name": ' + '"' + dept_name + '"' + '}'
         l.append(y)
 
     s3_client.put_object(
